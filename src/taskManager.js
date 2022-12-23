@@ -1,15 +1,17 @@
 import Task from "./task";
 
-export const taskArr = [];
+export const taskArr = {home: []};
 
-export function createTask(name, done) {
-    taskArr.push(new Task(name, done))
+export let selectedProject = "home";
+
+export function createProject(name) {
+    taskArr[name] = [];
 }
 
-export function deleteTask(index) {
-    taskArr.splice(index, 1)
+export function createTask(name, done, projectname) {
+    taskArr[projectname].push(new Task(name, done))
 }
 
-export function getTaskArr() {
-    return taskArr;
+export function deleteTask(projectname, index) {
+    taskArr[projectname].splice(index, 1)
 }

@@ -1,4 +1,4 @@
-export default function createhtml(keyname, parent, type, text, className, funcOnClick) {
+export function createhtml(keyname, parent, type, text, className, funcOnClick) {
     const element = document.createElement(keyname);
     parent.appendChild(element);
     
@@ -9,4 +9,8 @@ export default function createhtml(keyname, parent, type, text, className, funcO
 
     return element;
     
+}
+
+export function removeAllChildren(parent) {
+    while(parent.firstChild) parent.removeChild(parent.firstChild);
 }

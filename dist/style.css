@@ -1,0 +1,9 @@
+body {
+    background: rgb(29, 29, 29);
+    color: white;
+}
+
+.taskDiv {
+    display: flex;
+    align-items: center;
+}
