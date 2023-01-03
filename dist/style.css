@@ -1,7 +1,53 @@
 body {
     background: rgb(29, 29, 29);
     color: white;
+    margin: 0;
 }
+
+header {
+    text-align: center;
+    background-color: black;
+}
+
+header h1, h2 {
+    margin: 0px;
+    padding: 5px;
+}
+
+
+.content {
+    display: flex;
+}
+
+.sidebar {
+    padding: 20px;
+    background-color: rgb(54, 54, 54);
+}
+
+.createProjectDiv {
+    padding-bottom: 20px;
+}
+
+.projectList > * {
+    margin-bottom: 20px;
+}
+
+.main {
+    padding: 20px;
+}
+
+.createTaskDiv {
+    padding-bottom: 20px;
+}
+
+.taskList {
+    padding-bottom: 20px;
+}
+
+button {
+
+}
+
 
 .taskDiv {
     display: flex;

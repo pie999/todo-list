@@ -1,5 +1,5 @@
 import {createhtml, removeAllChildren} from "./htmlHelper";
-import {taskArr, createProject, createTask, deleteTask} from "./taskManager";
+import {taskArr, createProject, deleteProject, checkNoProjects, createTask, deleteTask} from "./taskManager";
 
 
 const createProjectDiv = document.querySelector(".createProjectDiv");
@@ -17,8 +17,11 @@ export function loadProjectUI() {
     const projectNameInput = createhtml("input", createProjectDiv, "text");
     const comfirmAddProjectBut = createhtml("button", createProjectDiv, 0, "add", 0, () => {
         createProject(projectNameInput.value);
-        removeAllChildren(createProjectDiv);
+        selectedProject = projectNameInput.value;
+        renderTasks(selectedProject);
         renderProjects();
+        if (!checkNoProjects()) addTaskBut.disabled = false;
+        removeAllChildren(createProjectDiv);
         createProjectDiv.appendChild(addProjectBut);
     })
     const cancelAddProjectBut = createhtml("button",createProjectDiv, 0, "cancel", 0, () => {
@@ -27,16 +30,18 @@ export function loadProjectUI() {
     })
 }
 
-function renderProjects() {
+export function renderProjects() {
     removeAllChildren(projectList);
     for (const project in taskArr) {
         const projectDiv = createhtml("div", projectList, 0, 0, "projectDiv");
-        const taskDivName = createhtml("button", projectDiv, 0, project, 0, () => {
+        const projectDivName = createhtml("button", projectDiv, 0, project, 0, () => {
             selectedProject = project;
             renderTasks(project);
         });
-        const taskDivRemoveBut = createhtml("button", projectDiv, 0, "r", 0, () => {
-            delete taskArr[project];
+        const projectDivRemoveBut = createhtml("button", projectDiv, 0, "r", 0, () => {
+            deleteProject(project);
+            if (checkNoProjects()) addTaskBut.disabled = true;
+            else if (project == selectedProject) selectedProject = taskArr[0];
             renderProjects();
         })
     }
@@ -58,7 +63,7 @@ export function loadTaskUI() {
 
 }
 
-function renderTasks(project) {
+export function renderTasks(project) {
     removeAllChildren(taskList);
     taskArr[project].forEach((task, index) => {
         const taskDiv = createhtml("div", taskList, 0, 0, "taskDiv");
