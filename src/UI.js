@@ -1,5 +1,6 @@
 import {createhtml, removeAllChildren} from "./htmlHelper";
-import {taskArr, createProject, deleteProject, checkNoProjects, createTask, deleteTask} from "./taskManager";
+import {taskArr, createProject, deleteProject, checkNoProjects, createTask, deleteTask,
+createTaskArr ,saveTaskArr, getTaskArr} from "./taskManager";
 
 
 const createProjectDiv = document.querySelector(".createProjectDiv");
@@ -10,7 +11,29 @@ const createTaskDiv = document.querySelector(".createTaskDiv");
 const addTaskBut = document.querySelector(".addtask");
 const taskList = document.querySelector(".taskList");
 
-let selectedProject = "home";
+export let selectedProject;
+
+export function initialize() {
+    if (localStorage.getItem('taskArr')) {
+        getTaskArr();
+        
+        if (Object.values(taskArr)[0]) {
+            for (const project in taskArr) {
+                selectedProject = project;
+                break
+            }
+            renderProjects();
+            renderTasks(selectedProject);
+        }
+        else addTaskBut.disabled = true;
+    } 
+    else {
+        createTaskArr();
+        selectedProject = "home";
+        renderProjects();
+        renderTasks(selectedProject);
+    }
+}
 
 export function loadProjectUI() {
     createProjectDiv.removeChild(addProjectBut);
@@ -32,6 +55,7 @@ export function loadProjectUI() {
 
 export function renderProjects() {
     removeAllChildren(projectList);
+    getTaskArr();
     for (const project in taskArr) {
         const projectDiv = createhtml("div", projectList, 0, 0, "projectDiv");
         const projectDivName = createhtml("button", projectDiv, 0, project, 0, () => {
@@ -40,8 +64,17 @@ export function renderProjects() {
         });
         const projectDivRemoveBut = createhtml("button", projectDiv, 0, "r", 0, () => {
             deleteProject(project);
-            if (checkNoProjects()) addTaskBut.disabled = true;
-            else if (project == selectedProject) selectedProject = taskArr[0];
+            if (checkNoProjects()) {
+                addTaskBut.disabled = true;
+                removeAllChildren(taskList);
+            }
+            else if (project == selectedProject) {
+                for (const project in taskArr) {
+                    selectedProject = project;
+                    break
+                }
+                renderTasks(selectedProject);
+            }
             renderProjects();
         })
     }
@@ -65,6 +98,7 @@ export function loadTaskUI() {
 
 export function renderTasks(project) {
     removeAllChildren(taskList);
+    getTaskArr();
     taskArr[project].forEach((task, index) => {
         const taskDiv = createhtml("div", taskList, 0, 0, "taskDiv");
         const taskDivName = createhtml("p", taskDiv, 0, task.name);

@@ -1,4 +1,4 @@
-import { loadTaskUI, loadProjectUI, renderProjects, renderTasks } from "./UI";
+import { selectedProject ,initialize, loadTaskUI, loadProjectUI, renderProjects, renderTasks } from "./UI";
 
 const addProjectBut = document.querySelector(".addProjectBut");
 const addTaskBut = document.querySelector(".addtask");
@@ -11,5 +11,4 @@ addProjectBut.addEventListener("click", () => {
     loadProjectUI();
 })
 
-renderProjects();
-renderTasks("home");
+initialize();
